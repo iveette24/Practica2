@@ -1,46 +1,50 @@
 public class LlistaCobertura {
 
+    private static final int MAX_COBERTURA = 1013;
+
     private Cobertura[] llistaCoberturas;
+    private int numCoberturas; // Nombre d'elemets disponibles a la taula.
 
     public LlistaCobertura(){
-        llistaCoberturas = new Cobertura[1013];
+        llistaCoberturas = new Cobertura[MAX_COBERTURA];
     }
 
-    public LlistaCobertura(Cobertura[] coberturas) {
-        llistaCoberturas = new Cobertura[coberturas.length];
-
+    public void afegirCoberturas(Cobertura[] coberturas) {
         for (int i = 0; i < coberturas.length; i++) {
-            llistaCoberturas[i] = coberturas[i].copia();
+            if (coberturas[i] != null && numCoberturas < MAX_COBERTURA) {
+                this.llistaCoberturas[numCoberturas] = coberturas[i].copia();
+                numCoberturas++;
+            }
         }
     }
 
+    /** Getter numero de elemetos de la lista 
+    *@return numCoberuras - variable con la cantidad e elementos disponibles en la tabla 
+    *
+    */
+
     public int getNumElements() {
-        return llistaCoberturas.length;
+        return numCoberturas;
     }
 
     public Cobertura getCobertura(int i) {
+        if (i < 0 || i >= numCoberturas) {
+            return null;
+        }
         return llistaCoberturas[i];
     }
 
-    public Cobertura[] getCoberturaPos(int pos) {
-       for (int i = 0; i < llistaCoberturas.length; i++) {
-            if (i == pos) {
-                return new Cobertura[]{llistaCoberturas[i]};
-            }
-        }
-        return null;
-    }
 
     public String toString() {
-       
+       String text = "";
 
         for (int i = 0; i < llistaCoberturas.length; i++) {
             if (llistaCoberturas[i] != null) {
-                return  "\t" + i + ": " + llistaCoberturas[i] + "\n";
+                text += ("\t" + i + ": " + llistaCoberturas[i] + "\n");
             }
         }
 
-      
+        return text;
     }
 
 
