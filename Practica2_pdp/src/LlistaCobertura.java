@@ -27,6 +27,11 @@ public class LlistaCobertura {
         return numCoberturas;
     }
 
+    /**
+     * Getter per obtenir les dades d'una cobertura segons  la seva posicio
+     * @param i per parametre pasem la posició
+     * @return dades de la cobertura.
+     */
     public Cobertura getCobertura(int i) {
         if (i < 0 || i >= numCoberturas) {
             return null;
