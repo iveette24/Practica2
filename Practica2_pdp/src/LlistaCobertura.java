@@ -18,7 +18,6 @@ public class LlistaCobertura {
             this.llistaCoberturas[numCoberturas] = cobertura.copia();
             numCoberturas++;
         }
-        
     }
 
     /** Getter numero de elemetos de la lista 
@@ -41,24 +40,21 @@ public class LlistaCobertura {
         return llistaCoberturas[i];
     }
 
-
     public String toString() {
         if (numCoberturas == 0 || llistaCoberturas == null) {
             return null;
         }
-       String text = "";
 
+        String text = "";
         for (int i = 0; i < llistaCoberturas.length; i++) {
             if (llistaCoberturas[i] != null) {
-                text += ("\nPosició " + (i+1) + ": " + llistaCoberturas[i] + "\n");
+                text += "\nPosició " + (i+1) + ": " + llistaCoberturas[i] + "\n";
             }
         }
-
         return text;
     }
 
     public int comptadorVelocitat(){
-
         int comp = 0;
         for(int i = 0; i < numCoberturas; i++){
             if(this.llistaCoberturas[i].getVelocitat() > 100){
@@ -66,38 +62,109 @@ public class LlistaCobertura {
             }
         }
         return comp;
-    };
+    }
 
     public Cobertura ambMenysPrecisio(){
         if (numCoberturas == 0 || llistaCoberturas == null) {
             return null;
         }
-        Cobertura precisió = llistaCoberturas[0];
-        for (int i =0 ; i < numCoberturas; i++){
-            if(llistaCoberturas[i].getPrecisio() < precisió.getPrecisio()){
-                precisió = llistaCoberturas[i];
+        Cobertura precisioMinima = llistaCoberturas[0];
+        for (int i = 0; i < numCoberturas; i++){
+            if (llistaCoberturas[i].getPrecisio() < precisioMinima.getPrecisio()){
+                precisioMinima = llistaCoberturas[i];
             }
         }
-        return  precisió;
+        return precisioMinima;
+    }
+
+    public int eliminarPerCodiPostal(int codiPostal) {
+        int eliminades = 0;
+        Cobertura[] novaLlista = new Cobertura[numCoberturas];
+        int posicio = 0;
+
+        for (int i = 0; i < numCoberturas; i++) {
+            if (llistaCoberturas[i].getCodiPostal() != codiPostal) {
+                novaLlista[posicio] = llistaCoberturas[i];
+                posicio++;
+            } else {
+                eliminades++;
+            }
+        }
+
+        llistaCoberturas = novaLlista;
+        mida = posicio;
+        numCoberturas = posicio;
+        return eliminades;
+    }
+
+    public double factorEficiencia(Cobertura cobertura) {
+        if (cobertura == null) {
+            return 0;
+        }
+        return (double) cobertura.getVelocitat() * cobertura.getSatelits() / cobertura.getPrecisio();
+    }
+
+    public Cobertura coberturaAmbFactorEficiencia(String activitat, String xarxa) {
+        if (activitat == null || xarxa == null) {
+            return null;
+        }
+
+        for (int i = 0; i < numCoberturas; i++) {
+            Cobertura c = llistaCoberturas[i];
+            if (c.getActivitat().equalsIgnoreCase(activitat)
+                    && c.getTipusXarxa().equalsIgnoreCase(xarxa)
+                    && c.getSatelits() > 13) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public int comptarFactorEficienciaSuperior(double x, String municipi) {
+        int comp = 0;
+        for (int i = 0; i < numCoberturas; i++) {
+            Cobertura c = llistaCoberturas[i];
+            if (c.getNomMunicipi().equalsIgnoreCase(municipi)
+                    && factorEficiencia(c) > x) {
+                comp++;
+            }
+        }
+        return comp;
+    }
+
+    public LlistaCobertura perOperador(String operador) {
+        int comp = 0;
+        for (int i = 0; i < numCoberturas; i++) {
+            if (llistaCoberturas[i].getOperador().equalsIgnoreCase(operador)) {
+                comp++;
+            }
+        }
+
+        LlistaCobertura resultat = new LlistaCobertura(comp);
+        for (int i = 0; i < numCoberturas; i++) {
+            if (llistaCoberturas[i].getOperador().equalsIgnoreCase(operador)) {
+                resultat.afegirCoberturas(llistaCoberturas[i]);
+            }
+        }
+        return resultat;
     }
 
     public LlistaCobertura sublLlistaCobertura(String municipi){
         int comp = 0;
 
-        for (int i=0; i<numCoberturas; i++){
+        for (int i = 0; i < numCoberturas; i++){
             if (llistaCoberturas[i].getNomMunicipi().equalsIgnoreCase(municipi)){
                 comp++;
             }
         }
 
-        LlistaCobertura listaMucinipi = new LlistaCobertura(comp);
+        LlistaCobertura listaMunicipi = new LlistaCobertura(comp);
 
-        for(int i=0; i<numCoberturas; i++){
+        for(int i = 0; i < numCoberturas; i++){
             if (llistaCoberturas[i].getNomMunicipi().equalsIgnoreCase(municipi)) {
-                listaMucinipi.afegirCoberturas(llistaCoberturas[i]);
+                listaMunicipi.afegirCoberturas(llistaCoberturas[i]);
             }
         }
-        return listaMucinipi;
-
+        return listaMunicipi;
     }
 }
