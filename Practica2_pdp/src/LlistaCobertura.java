@@ -101,7 +101,7 @@ public class LlistaCobertura {
         if (cobertura == null) {
             return 0;
         }
-        return (double) cobertura.getVelocitat() * cobertura.getSatelits() / cobertura.getPrecisio();
+        return /*(double)*/ cobertura.getVelocitat() * cobertura.getSatelits() / cobertura.getPrecisio();
     }
 
     public Cobertura coberturaAmbFactorEficiencia(String activitat, String xarxa) {
@@ -158,13 +158,13 @@ public class LlistaCobertura {
             }
         }
 
-        LlistaCobertura listaMunicipi = new LlistaCobertura(comp);
+        LlistaCobertura llistaMunicipi = new LlistaCobertura(comp);
 
         for(int i = 0; i < numCoberturas; i++){
             if (llistaCoberturas[i].getNomMunicipi().equalsIgnoreCase(municipi)) {
-                listaMunicipi.afegirCoberturas(llistaCoberturas[i]);
+                llistaMunicipi.afegirCoberturas(llistaCoberturas[i]);
             }
         }
-        return listaMunicipi;
+        return llistaMunicipi;
     }
 }
