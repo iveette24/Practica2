@@ -18,10 +18,34 @@ public class UsaLlistaDadesUrb {
 
 		// mostrem el contingut que hem llegit. Això ho eliminarem en les
 		// versions finals del codi
+		
+		LlistaCobertura  lista = new LlistaCobertura(dataset.length);
+
+		
 		for (int i = 0; i < dataset.length; i++) {
 			System.out.println("Linia " + (i + 1) + " conté " + dataset[i]);
+
+			String[] columnas = dataset[i].split(";");
+			String operador = columnas[0];
+			String tipusXarxa = columnas[1];
+			int velocitat = Integer.parseInt(columnas[2]);
+			int satelits = Integer.parseInt(columnas[3]);
+			int precisio = Integer.parseInt(columnas[4]);
+			String activitat = columnas[5];
+			int codigoPostal = Integer.parseInt(columnas[6]);
+			String municipi = columnas[7];
+
+			Cobertura novaCobertura = new Cobertura(operador,tipusXarxa,velocitat,satelits,precisio,activitat,codigoPostal,municipi);
+			lista.afegirCoberturas(novaCobertura);
+
+			System.out.println(municipi);
 		}
 
+		String muni;
+		System.out.println("Introduce un municipio del que quieras hacer una lista: ");
+		muni = teclat.nextLine();
+
+		System.out.println(lista.sublLlistaCobertura(muni));
 		// Completar el codi a partir d'aquí
 		Scanner sc = new Scanner(System.in);
 		int opcio;
@@ -43,16 +67,18 @@ public class UsaLlistaDadesUrb {
 			switch (opcio) {
 				case 1:
 					System.out.println("\n Opció 1: Mostrar contingut de la taula. ");
-					
+					mostrarLlista(lista);
 					break;
 				case 2:
 					System.out.println("\n Opcion 2: Eliminar dades segons el codi postal.");
 					break;
 				case 3:
 					System.out.println("\n Opcion 3: Compteig punts de cobetura.");
+					comp(lista);
 					break;
 				case 4:
 					System.out.println("\n Opcion 4: Dades de la instancia amb menys precició.");
+					menysPrecisio(lista);
 					break;	
 				case 5:
 					System.out.println("\n Opcion 5: Calcular el factor d'eficiencia.");
@@ -63,9 +89,11 @@ public class UsaLlistaDadesUrb {
 				case 7:
 					System.out.println("\n Opcion 7: Dades de tots el punts de cobertura d'un operador especific.");
 					break;	
+					
 				case 8:
 					System.out.println("\n Fin del programa.");
 					break;
+				
 				default:
 					System.out.println("Opció no valida.");;
 			}
@@ -97,9 +125,24 @@ public class UsaLlistaDadesUrb {
 		// ara anirem guardant les nLinies que sí volem llegir
 		for (int i = 0; i < nLinies; i++) {
 			result[i] = f.nextLine();
+			
 		}
 		f.close();
 		return result;
 	}
 
+	private static void mostrarLlista(LlistaCobertura lista){
+		
+		System.out.println(lista.toString());
+	}
+
+	private static void comp(LlistaCobertura lista){
+		
+		System.out.println("Punts amb velocitat > 100: " + lista.comptadorVelocitat());
+	}
+
+	private static void menysPrecisio(LlistaCobertura lista){
+		
+		System.out.println("Instacia amb menys precisió: " + lista.ambMenysPrecisio());
+	}
 }
